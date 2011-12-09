@@ -1,0 +1,89 @@
+﻿@using FakeItEasy;
+@using Domain;
+@using Shouldly;
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>RDD - Razor driven development</title>
+</head>
+<body>
+  <h1>RDD - Razor driven development - The first bankaccount specs</h1>
+
+<p>
+    This is an example of a BDD/CQRS approach using the following tools:
+</p>
+<ul>
+<li>An empty ASP.Net project</li>
+<li>FakeItEasy</li>
+<li>ShouldLy</li>
+<li>Razor templates</li>
+</ul>
+<p>
+    Works pretty sweet IMO...
+</p>
+<p> ToJans@twitter
+</p>
+   
+    @{Builder.Context SUT = null;}
+<pre>
+    **************
+    * DEPOSITING *
+    **************
+
+     Deposit some money
+     ------------------
+
+        Given a bankaccount                                     @{ SUT = Builder.ABankAccount;}
+
+        When we deposit an amount                               @{ SUT.Account.Deposit(100); }
+
+        Then the amount should have been deposited              @{ A.CallTo(() => SUT.Events.AmountDeposited(100)).MustHaveHappened(); }
+
+
+     Deposit a negative amount
+     -------------------------
+
+        Given a bankaccount                                     @{ SUT = Builder.ABankAccount;}
+
+        When we deposit a negative amount                       @{ Should.Throw<InvalidOperationException>(()=> SUT.Account.Deposit(-100)); }
+
+        Then the amount should have been deposited              @{ A.CallTo(() => SUT.Events.AmountDeposited(A<decimal>.Ignored)).MustNotHaveHappened(); }
+
+
+    ***************
+    * WITHDRAWING *
+    ***************
+
+     Withdraw some money
+     --------------------
+
+        Given a bankaccount with some money on it               @{ SUT = Builder.ABankAccount.WithSomeMoneyOnIt(100);}
+
+        When we withdraw a small amount from the account        @{ Should.NotThrow(()=> SUT.Account.Withdraw(20)); }
+
+        Then the small amount should have been credited         @{ A.CallTo(() => SUT.Events.AmountWithDrawn(20)).MustHaveHappened(); }
+
+
+     Withdrawing a negative amount should fail
+     ------------------------------------------
+
+        Given a bankaccount with some money on it               @{ SUT = Builder.ABankAccount.WithSomeMoneyOnIt(100);}
+
+        When we withdraw a negative amount from the account     @{ Should.Throw<InvalidOperationException>(()=> SUT.Account.Withdraw(-20));}
+
+        Then the negative amount should not have been withdrawn @{ A.CallTo(() => SUT.Events.AmountWithDrawn(20)).MustNotHaveHappened(); }
+
+
+     Withdrawing an amount that is to large should fail
+     --------------------------------------------------
+
+        Given a bankaccount with some money on it               @{ SUT = Builder.ABankAccount.WithSomeMoneyOnIt(100);}
+
+        When we withdraw an amount that is to large             @{ Should.Throw<InvalidOperationException>(()=> SUT.Account.Withdraw(120));}
+
+        Then the to large amount should not have been withdrawn @{ A.CallTo(() => SUT.Events.AmountWithDrawn(A<decimal>.Ignored)).MustNotHaveHappened(); }
+
+</pre>
+</body>
+</html>
