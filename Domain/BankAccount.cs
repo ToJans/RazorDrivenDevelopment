@@ -5,23 +5,23 @@ using System.Web;
 
 namespace Domain
 {
-    public interface IBankAccountEvents
+    public interface IHandleBankAccountChanges
     {
         void AmountDeposited(decimal Amount);
         void AmountWithDrawn(decimal Amount);
     }
 
-    public class BankAccount:IBankAccountEvents
+    public class BankAccount:IHandleBankAccountChanges
     {
         private string id;
-        private IBankAccountEvents events;
+        private IHandleBankAccountChanges[] relatedinstances;
         private decimal balance;
 
-        public BankAccount(string id, IBankAccountEvents events)
+        public BankAccount(string id, params IHandleBankAccountChanges[] relatedinstances)
         {
             // TODO: Complete member initialization
             this.id = id;
-            this.events = events;
+            this.relatedinstances = relatedinstances;
         }
 
         public void Deposit(decimal Amount)
@@ -37,10 +37,11 @@ namespace Domain
             Apply(x => x.AmountWithDrawn(Amount));
         }
 
-        void Apply(Action<IBankAccountEvents> act)
+        void Apply(Action<IHandleBankAccountChanges> change)
         {
-            act(this);
-            act(events);
+            change(this);
+            foreach(var instance in relatedinstances)
+                change(instance);
         }
 
         static class Guard {
@@ -51,12 +52,12 @@ namespace Domain
             }
         }
 
-        void IBankAccountEvents.AmountDeposited(decimal Amount)
+        void IHandleBankAccountChanges.AmountDeposited(decimal Amount)
         {
             balance += Amount;
         }
 
-        void IBankAccountEvents.AmountWithDrawn(decimal Amount)
+        void IHandleBankAccountChanges.AmountWithDrawn(decimal Amount)
         {
             balance -= Amount;
         }
