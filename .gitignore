@@ -2,3 +2,4 @@ Domain/bin/*
 Domain/obj/*
 packages/*
 Specs/Bin
+*.suo
