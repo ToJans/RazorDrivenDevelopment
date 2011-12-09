@@ -71,7 +71,7 @@
 
         When we withdraw a negative amount from the account     @{ Should.Throw<InvalidOperationException>(()=> SUT.Account.Withdraw(-20));}
 
-        Then the negative amount should not have been withdrawn @{ A.CallTo(() => SUT.Changes.AmountWithDrawn(20)).MustNotHaveHappened(); }
+        Then the negative amount should not have been withdrawn @{ A.CallTo(() => SUT.Changes.AmountWithDrawn(A<decimal>.Ignored)).MustNotHaveHappened(); }
 
 
      Withdrawing an amount that is to large should fail
