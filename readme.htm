@@ -1,0 +1,70 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>RDD - Razor driven development</title>
+</head>
+<body>
+  <h1>RDD - Razor driven development - The first bankaccount specs</h1>
+
+<p>
+    This is an example of a BDD/CQRS approach using the following tools:
+</p>
+<ul>
+<li>An empty ASP.Net project</li>
+<li>FakeItEasy</li>
+<li>ShouldLy</li>
+<li>Razor templates</li>
+</ul>
+<p>
+    Works pretty sweet IMO...
+</p>
+<p> ToJans@twitter
+</p>
+   
+<pre>
+    **************
+    * DEPOSITING *
+    **************
+
+     Deposit some money
+     ------------------
+
+        Given a bankaccount                                     
+        When we deposit an amount                               
+        Then the amount should have been deposited              
+
+     Deposit a negative amount
+     -------------------------
+
+        Given a bankaccount                                     
+        When we deposit a negative amount                       
+        Then the amount should have been deposited              
+
+    ***************
+    * WITHDRAWING *
+    ***************
+
+     Withdraw some money
+     --------------------
+
+        Given a bankaccount with some money on it               
+        When we withdraw a small amount from the account        
+        Then the small amount should have been credited         
+
+     Withdrawing a negative amount should fail
+     ------------------------------------------
+
+        Given a bankaccount with some money on it               
+        When we withdraw a negative amount from the account     
+        Then the negative amount should not have been withdrawn 
+
+     Withdrawing an amount that is to large should fail
+     --------------------------------------------------
+
+        Given a bankaccount with some money on it               
+        When we withdraw an amount that is to large             
+        Then the to large amount should not have been withdrawn 
+</pre>
+</body>
+</html>
