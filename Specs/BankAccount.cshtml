@@ -47,7 +47,7 @@
 
         When we deposit a negative amount                       @{ Should.Throw<InvalidOperationException>(()=> SUT.Account.Deposit(-100)); }
 
-        Then the amount should have been deposited              @{ A.CallTo(() => SUT.Changes.AmountDeposited(A<decimal>.Ignored)).MustNotHaveHappened(); }
+        Then the amount should not have been deposited          @{ A.CallTo(() => SUT.Changes.AmountDeposited(A<decimal>.Ignored)).MustNotHaveHappened(); }
 
 
     ***************
