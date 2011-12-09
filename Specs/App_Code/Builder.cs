@@ -21,9 +21,9 @@ public class Builder
 
     public class Context
     {
-        public Context WithSomeMoneyOnIt(decimal money)
+        public Context WithSomeMoneyOnIt(decimal Amount)
         {
-            (Account as IBankAccountEvents).AmountDeposited(20);
+            (Account as IBankAccountEvents).AmountDeposited(Amount);
             return this;
         }
 
