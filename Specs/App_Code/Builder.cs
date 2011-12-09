@@ -12,9 +12,9 @@ public class Builder
         get
         {
             var self = new Context();
-            var id = "Account/1";
+            self.AccountId = "Account/1";
             self.Changes = A.Fake<IHandleBankAccountChanges>();
-            self.Account = new BankAccount(id, self.Changes);
+            self.Account = new BankAccount(self.AccountId, self.Changes);
             return self;
         }
     }
@@ -23,13 +23,15 @@ public class Builder
     {
         public Context WithSomeMoneyOnIt(decimal Amount)
         {
-            (Account as IHandleBankAccountChanges).AmountDeposited(Amount);
+            (Account as IHandleBankAccountChanges).AmountDeposited(AccountId,Amount);
             return this;
         }
 
         public IHandleBankAccountChanges Changes { get; set; }
 
         public BankAccount Account { get; set; }
+
+        public string AccountId { get; set; }
     }
 }
 
