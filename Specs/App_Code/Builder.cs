@@ -23,7 +23,7 @@ public class Builder
     {
         public Context WithSomeMoneyOnIt(decimal Amount)
         {
-            (Account as IHandleBankAccountChanges).AmountDeposited(AccountId,Amount);
+            (Account as IHandleBankAccountChanges).OnAmountDeposited(AccountId,Amount);
             return this;
         }
 

@@ -7,8 +7,8 @@ namespace Domain
 {
     public interface IHandleBankAccountChanges
     {
-        void AmountDeposited(string BankAccountId,decimal Amount);
-        void AmountWithDrawn(string BankAccountId,decimal Amount);
+        void OnAmountDeposited(string BankAccountId,decimal Amount);
+        void OnAmountWithDrawn(string BankAccountId,decimal Amount);
     }
 
     public class BankAccount:IHandleBankAccountChanges
@@ -27,14 +27,14 @@ namespace Domain
         public void Deposit(decimal Amount)
         {
             Guard.Against(Amount <= 0, "You can not deposit an amount smaller or equal to zero");
-            Apply(x=>x.AmountDeposited(id,Amount));
+            Apply(x=>x.OnAmountDeposited(id,Amount));
         }
 
         public void Withdraw(decimal Amount)
         {
             Guard.Against(Amount <= 0, "You can not withdraw an amount smaller or equal to zero");
             Guard.Against(Amount > balance, "You can not withdraw more then the current balance");
-            Apply(x => x.AmountWithDrawn(id,Amount));
+            Apply(x => x.OnAmountWithDrawn(id,Amount));
         }
 
         void Apply(Action<IHandleBankAccountChanges> change)
@@ -52,12 +52,12 @@ namespace Domain
             }
         }
 
-        void IHandleBankAccountChanges.AmountDeposited(string BankAccountId, decimal Amount)
+        void IHandleBankAccountChanges.OnAmountDeposited(string BankAccountId, decimal Amount)
         {
             balance += Amount;
         }
 
-        void IHandleBankAccountChanges.AmountWithDrawn(string BankAccountId, decimal Amount)
+        void IHandleBankAccountChanges.OnAmountWithDrawn(string BankAccountId, decimal Amount)
         {
             balance -= Amount;
         }
